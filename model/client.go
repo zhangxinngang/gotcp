@@ -1,9 +1,8 @@
-package main
+package model
 
 import (
 	"encoding/json"
 	"fmt"
-	"gotcp/model"
 	"net"
 	"strings"
 )
@@ -13,11 +12,11 @@ type Client struct {
 	Conn net.Conn
 }
 
-func Register(id int) Client {
+func RegisterCli(id int) Client {
 	conn, _ := net.Dial("tcp", "127.0.0.1:9099")
 	// go run test**.go 11
 	//TOID, _ := strconv.Atoi(args[2])
-	register := model.Data{Type: 1, Register: model.Register{Id: id}}
+	register := Data{Type: 1, Register: Register{Id: id}}
 
 	msg, _ := json.Marshal(register)
 	json.Unmarshal(msg, register)
@@ -53,7 +52,6 @@ func (this *Client) Read() {
 func (this *Client) Write(input string) {
 	_, err := this.Conn.Write([]byte(input))
 	if err != nil {
-		fmt.Println("error_read:", err)
-		isbreak = true
+		fmt.Println("error_write:", err)
 	}
 }
